@@ -1,0 +1,11 @@
+cqhttp:
+  server: "http://127.0.0.1:5700"
+  token:
+  group_id:
+
+server:
+  hostname: 127.0.0.1
+  port: 8380
+
+security:
+  secret:
