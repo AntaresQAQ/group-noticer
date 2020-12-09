@@ -3,8 +3,15 @@ const Utility = require("./utility.js");
 app.post("/send_message", async (req, res) => {
   try {
     let message = Utility.escapeCQCode(req.body.message);
-    if (req.body.at) {
-      message = `[CQ:at,qq=${req.body.at}]\n${message}`;
+    const at = req.body.at;
+    if (at) {
+      if (at === 'all') {
+        message = `[CQ:at,qq=all]\n${message}`;
+      } else if (typeof at === "object") {
+        at.forEach(value => message += `\n[CQ:at,qq=${value}]`);
+      } else {
+        message = `[CQ:at,qq=${at}]\n${message}`;
+      }
     }
     let message_id = await bot.sendGroupMessage(message);
     res.send({
