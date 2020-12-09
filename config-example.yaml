@@ -4,6 +4,7 @@ cqhttp:
   group_id:
 
 server:
+  socket: /dev/shm/group-noticer.sock
   hostname: 127.0.0.1
   port: 8380
 

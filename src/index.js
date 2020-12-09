@@ -1,6 +1,8 @@
+const fs = require("fs");
+
 class GroupNoticer {
   static loadConfig() {
-    const fs = require("fs"), path = require("path"), yaml = require("js-yaml");
+    const path = require("path"), yaml = require("js-yaml");
     const file_path = path.join(__dirname, "../config.yaml");
     if (!fs.existsSync(file_path)) {
       fs.copyFileSync(path.join(__dirname, "../config-example.yaml"), file_path);
@@ -8,7 +10,7 @@ class GroupNoticer {
     return yaml.safeLoad(fs.readFileSync(file_path).toString());
   }
 
-  static loadHooks(config) {
+  static loadHooks(security) {
     const BodyParser = require("body-parser");
     app.use(BodyParser.urlencoded({
       extended: true,
@@ -18,7 +20,7 @@ class GroupNoticer {
 
     app.server = require("http").createServer(app);
 
-    const token = require("./utility.js").md5(config.security.secret);
+    const token = require("./utility.js").md5(security.secret);
     app.use((req, res, next) => {
       if (req.query.token !== token) {
         res.send({code: 403, msg: "Permission error"});
@@ -28,13 +30,25 @@ class GroupNoticer {
     });
   }
 
-  static loadApi() {
-    require("./api_post.js");
-    require("./api_get.js");
+  static listen(server) {
+    if (server.socket) {
+      fs.stat(server.socket, function (err) {
+        if (!err) fs.unlinkSync(server.socket);
+        app.server.listen(server.socket, () => {
+          fs.chmodSync(server.socket, "775");
+          console.log(`App is listening on ${server.socket}...`);
+        });
+      });
+    } else {
+      app.server.listen(server.port, server.hostname, () => {
+        console.log(`App is listening on ${server.hostname}:${server.port}...`);
+      });
+    }
   }
 
   static async run() {
     const config = this.loadConfig();
+
     const CQHttp = require('./cqhttp.js');
     global.bot = new CQHttp(
       config.cqhttp.server,
@@ -44,12 +58,11 @@ class GroupNoticer {
 
     global.app = require("express")();
 
-    this.loadHooks(config);
-    this.loadApi();
+    this.loadHooks(config.security);
 
-    app.server.listen(config.server.port, config.server.hostname, () => {
-      console.log(`App is listening on ${config.server.hostname}:${config.server.port}...`);
-    });
+    require("./api.js");
+
+    this.listen(config.server);
   }
 }
 
