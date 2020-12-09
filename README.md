@@ -1,6 +1,38 @@
 # group-noticer
 QQ群通知器
 
+## 运行
+
+环境：Node.js 12+
+
+```bash
+yarn
+node run.js
+```
+
+编辑配置文件`config.yaml`。
+
+```yaml
+cqhttp:
+  server: http://127.0.0.1:5700 # cqhttp监听端口
+  token: # cqhttp的token
+  group_id: # 你要进行通知的群号
+
+server:
+  socket: /dev/shm/group-noticer.sock # 如果需要监听端口删除这行
+  hostname: 127.0.0.1 # 监听地址
+  port: 8380 # 监听端口
+
+security:
+  secret: # 用于认证身份的密码，必填
+```
+
+编辑后，运行：
+
+```bash
+node run.js
+```
+
 ## API
 
 ### /send_message
