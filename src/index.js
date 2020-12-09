@@ -29,7 +29,7 @@ class GroupNoticer {
     const token = require("./utility.js").md5(security.secret);
     app.use((req, res, next) => {
       if (req.query.token !== token) {
-        res.send({code: 403, msg: "Permission error"});
+        res.status(403).send({code: 403, msg: "Permission error"});
         return;
       }
       next();
