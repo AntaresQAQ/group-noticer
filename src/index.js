@@ -41,7 +41,7 @@ class GroupNoticer {
       fs.stat(server.socket, function (err) {
         if (!err) fs.unlinkSync(server.socket);
         app.server.listen(server.socket, () => {
-          fs.chmodSync(server.socket, "775");
+          fs.chmodSync(server.socket, "777");
           console.log(`App is listening on ${server.socket}...`);
         });
       });
