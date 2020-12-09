@@ -33,6 +33,23 @@ security:
 node run.js
 ```
 
+## 认证
+
+服务端保存了用于身份认证的密码。
+
+访问API时，请在query中包含：
+
+- token：身份认证密码的md5值
+
+token不正确的访问会返回403错误和以下信息：
+
+```json
+{
+  "code": 403,
+  "msg": "Permission error"
+}
+```
+
 ## API
 
 ### /send_message
