@@ -6,7 +6,6 @@ class GroupNoticer {
     const file_path = path.join(__dirname, "../config.yaml");
     if (!fs.existsSync(file_path)) {
       fs.copyFileSync(path.join(__dirname, "../config-example.yaml"), file_path);
-
     }
     const config = yaml.safeLoad(fs.readFileSync(file_path).toString());
     if (!config.security.secret || !config.cqhttp.token || !config.cqhttp.group_id ||
