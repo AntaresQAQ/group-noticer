@@ -2,7 +2,7 @@
   "name": "group-noticer",
   "version": "1.0.0",
   "description": "A QQ group noticer",
-  "main": "app.js",
+  "main": "main.js",
   "repository": "https://github.com/AntaresQAQ/group-noticer.git",
   "author": "Antares <antares.oier@gmail.com>",
   "license": "MIT",
@@ -13,7 +13,6 @@
     "crypto-js": "^4.0.0",
     "express": "^4.17.1",
     "fs-extra": "^9.0.1",
-    "js-yaml": "^3.14.1",
-    "jsonwebtoken": "^8.5.1"
+    "js-yaml": "^3.14.1"
   }
 }
