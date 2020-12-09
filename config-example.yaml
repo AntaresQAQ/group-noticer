@@ -1,5 +1,5 @@
 cqhttp:
-  server: "http://127.0.0.1:5700"
+  server: http://127.0.0.1:5700
   token:
   group_id:
 
