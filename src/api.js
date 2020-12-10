@@ -74,9 +74,20 @@ app.post("/send_link", async (req, res) => {
   }
 });
 
+app.post("/send_poke", async (req, res) => {
+  try {
+    const user_id = req.body.user_id;
+    await bot.sendGroupMessage(`[CQ:poke,qq=${user_id}]`);
+    res.send({code: 200, msg: "ok"});
+  } catch (e) {
+    console.log(e);
+    res.send({code: 500, msg: e.toString()});
+  }
+});
+
 app.post("/send_notice", async (req, res) => {
   try {
-    let {title, content} = req.body;
+    const {title, content} = req.body;
     await bot.sendGroupNotice(title, content);
     res.send({code: 200, msg: "ok"});
   } catch (e) {
