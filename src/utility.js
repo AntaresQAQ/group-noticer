@@ -15,14 +15,16 @@ class Utility {
   }
 
   static escapeCQCode(text, insideCQ = false) {
-    if (insideCQ) text = text.replace(/,/g, "&#44;");
-    return text.replace(/&/g, "&amp;")
+    if (insideCQ) text = text.toString().replace(/,/g, "&#44;");
+    return text.toString()
+      .replace(/&/g, "&amp;")
       .replace(/\[/g, "&#91;")
       .replace(/]/g, "&#93;");
   }
 
   static unescapeCQCode(text) {
-    return text.replace(/&#44;/g, ",")
+    return text.toString()
+      .replace(/&#44;/g, ",")
       .replace(/&amp;/g, "&")
       .replace(/&#91;/g, "[")
       .replace(/&#93;/g, "]");

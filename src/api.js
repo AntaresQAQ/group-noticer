@@ -9,9 +9,9 @@ app.post("/send_message", async (req, res) => {
       if (at === 'all') {
         message = `[CQ:at,qq=all]\n${message}`;
       } else if (typeof at === "object") {
-        at.forEach(value => message += `\n[CQ:at,qq=${value}]`);
+        at.forEach(value => message += `\n[CQ:at,qq=${Utility.escapeCQCode(value, true)}]`);
       } else {
-        message = `[CQ:at,qq=${at}]\n${message}`;
+        message = `[CQ:at,qq=${Utility.escapeCQCode(at, true)}]\n${message}`;
       }
     }
     let message_id = await bot.sendGroupMessage(message);
@@ -41,7 +41,7 @@ app.post("/send_image", async (req, res) => {
       });
       return;
     }
-    const message = `[CQ:image,file=${file}]`;
+    const message = `[CQ:image,file=${Utility.escapeCQCode(file, true)}]`;
     const message_id = await bot.sendGroupMessage(message);
     logger.info(`send_image: ${message} id=${message_id}`);
     res.send({
@@ -59,12 +59,13 @@ app.post("/send_link", async (req, res) => {
   try {
     logger.debug(`send_link: body\n${Utility.inspect(req.body)}`);
     const {url, title, content, image} = req.body;
-    let message = `[CQ:share,url=${url},title=${title}`;
+    let message = `[CQ:share,url=${Utility.escapeCQCode(url, true)},` +
+      `title=${Utility.escapeCQCode(title, true)}`;
     if (content) {
-      message = message + `,content=${content}`;
+      message = message + `,content=${Utility.escapeCQCode(content, true)}`;
     }
     if (image) {
-      message = message + `,image=${image}`
+      message = message + `,image=${Utility.escapeCQCode(image, true)}`
     }
     message = message + "]";
     const message_id = await bot.sendGroupMessage(message);
@@ -84,7 +85,7 @@ app.post("/send_poke", async (req, res) => {
   try {
     logger.debug(`send_poke: body\n${Utility.inspect(req.body)}`);
     const user_id = req.body.user_id;
-    await bot.sendGroupMessage(`[CQ:poke,qq=${user_id}]`);
+    await bot.sendGroupMessage(`[CQ:poke,qq=${Utility.escapeCQCode(user_id, true)}]`);
     logger.info(`send_poke: user_id=${user_id}`);
     res.send({code: 200, msg: "ok"});
   } catch (e) {
