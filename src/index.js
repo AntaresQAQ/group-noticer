@@ -1,4 +1,5 @@
 const fs = require("fs");
+const Utility = require("./utility.js");
 
 global.ErrorMsg = class ErrorMsg {
   constructor(info, retcode) {
@@ -11,7 +12,7 @@ global.ErrorMsg = class ErrorMsg {
   }
 }
 
-class GroupNoticer {
+global.GroupNoticer = class GroupNoticer {
   static loadConfig() {
     const path = require("path"), yaml = require("js-yaml");
     const file_path = path.join(__dirname, "../config.yaml");
@@ -37,7 +38,7 @@ class GroupNoticer {
 
     app.server = require("http").createServer(app);
 
-    const token = require("./utility.js").md5(security.secret);
+    const token = Utility.md5(security.secret);
     app.use((req, res, next) => {
       if (req.query.token !== token) {
         res.status(403).send({code: 403, msg: "Permission error"});
@@ -49,7 +50,7 @@ class GroupNoticer {
 
   static listen(server) {
     if (server.socket) {
-      fs.stat(server.socket, function (err) {
+      fs.stat(server.socket, (err) => {
         if (!err) fs.unlinkSync(server.socket);
         app.server.listen(server.socket, () => {
           fs.chmodSync(server.socket, "777");
@@ -63,21 +64,21 @@ class GroupNoticer {
     }
   }
 
+  static log(obj) {
+    if (obj instanceof ErrorMsg) {
+      logger.warning(Utility.inspect(obj));
+    } else {
+      logger.error(obj);
+    }
+  }
+
   static async run() {
     const config = this.loadConfig();
 
     const Logger = require('./logger.js');
     const CQHttp = require('./cqhttp.js');
-    const {inspect} = require("./utility.js");
 
     global.logger = new Logger(config.log_level);
-    global.log_ex = (e) => {
-      if (e instanceof ErrorMsg) {
-        logger.warning(inspect(e));
-      } else {
-        logger.error(e);
-      }
-    }
 
     global.bot = new CQHttp(
       config.cqhttp.server,

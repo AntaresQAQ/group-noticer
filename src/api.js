@@ -22,7 +22,7 @@ app.post("/send_message", async (req, res) => {
       message_id
     });
   } catch (e) {
-    log_ex(e);
+    GroupNoticer.log(e);
     res.send({code: 500, msg: e});
   }
 });
@@ -50,7 +50,7 @@ app.post("/send_image", async (req, res) => {
       message_id
     });
   } catch (e) {
-    log_ex(e);
+    GroupNoticer.log(e);
     res.send({code: 500, msg: e});
   }
 });
@@ -75,7 +75,7 @@ app.post("/send_link", async (req, res) => {
       message_id
     });
   } catch (e) {
-    log_ex(e);
+    GroupNoticer.log(e);
     res.send({code: 500, msg: e});
   }
 });
@@ -88,7 +88,7 @@ app.post("/send_poke", async (req, res) => {
     logger.info(`send_poke: user_id=${user_id}`);
     res.send({code: 200, msg: "ok"});
   } catch (e) {
-    log_ex(e);
+    GroupNoticer.log(e);
     res.send({code: 500, msg: e});
   }
 });
@@ -101,7 +101,7 @@ app.post("/send_notice", async (req, res) => {
     logger.info(`send_notice: title=${title} content=${content}`);
     res.send({code: 200, msg: "ok"});
   } catch (e) {
-    log_ex(e);
+    GroupNoticer.log(e);
     res.send({code: 500, msg: e});
   }
 });
@@ -113,7 +113,7 @@ app.post("/delete_message", async (req, res) => {
     logger.info(`delete_message: message_id=${req.body.message_id}`);
     res.send({code: 200, msg: "ok"});
   } catch (e) {
-    log_ex(e);
+    GroupNoticer.log(e);
     res.send({code: 500, msg: e.toString()});
   }
 });
@@ -128,7 +128,7 @@ app.get("/get_members", async (req, res) => {
       members
     });
   } catch (e) {
-    log_ex(e);
+    GroupNoticer.log(e);
     res.send({code: 500, msg: e});
   }
 });
