@@ -1,5 +1,4 @@
 const fs = require("fs");
-const Utility = require("./utility.js");
 
 global.ErrorMsg = class ErrorMsg {
   constructor(info, retcode) {
@@ -12,7 +11,7 @@ global.ErrorMsg = class ErrorMsg {
   }
 }
 
-global.GroupNoticer = class GroupNoticer {
+class GroupNoticer {
   static loadConfig() {
     const path = require("path"), yaml = require("js-yaml");
     const file_path = path.join(__dirname, "../config.yaml");
@@ -38,9 +37,10 @@ global.GroupNoticer = class GroupNoticer {
 
     app.server = require("http").createServer(app);
 
-    const token = Utility.md5(security.secret);
+    const token = require("./utility.js").md5(security.secret);
     app.use((req, res, next) => {
       if (req.query.token !== token) {
+        logger.info(`Authentication failed: token=${req.query.token}`);
         res.status(403).send({code: 403, msg: "Permission error"});
         return;
       }
@@ -61,14 +61,6 @@ global.GroupNoticer = class GroupNoticer {
       app.server.listen(server.port, server.hostname, () => {
         logger.info(`App is listening on ${server.hostname}:${server.port}...`);
       });
-    }
-  }
-
-  static log(obj) {
-    if (obj instanceof ErrorMsg) {
-      logger.warning(Utility.inspect(obj));
-    } else {
-      logger.error(obj);
     }
   }
 

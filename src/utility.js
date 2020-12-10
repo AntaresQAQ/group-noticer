@@ -31,6 +31,14 @@ class Utility {
   static inspect(obj) {
     return util.inspect(obj);
   }
+
+  static log(obj) {
+    if (obj instanceof ErrorMsg) {
+      logger.warning(this.inspect(obj));
+    } else {
+      logger.error(obj);
+    }
+  }
 }
 
 module.exports = Utility;
