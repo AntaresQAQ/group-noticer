@@ -1,5 +1,16 @@
 const fs = require("fs");
 
+global.ErrorMsg = class ErrorMsg {
+  constructor(info, retcode) {
+    this.info = info;
+    this.retcode = retcode;
+  }
+
+  toString() {
+    return `${this.info}, retcode=${this.retcode}`;
+  }
+}
+
 class GroupNoticer {
   static loadConfig() {
     const path = require("path"), yaml = require("js-yaml");
@@ -42,12 +53,12 @@ class GroupNoticer {
         if (!err) fs.unlinkSync(server.socket);
         app.server.listen(server.socket, () => {
           fs.chmodSync(server.socket, "777");
-          console.log(`App is listening on ${server.socket}...`);
+          logger.info(`App is listening on ${server.socket}...`);
         });
       });
     } else {
       app.server.listen(server.port, server.hostname, () => {
-        console.log(`App is listening on ${server.hostname}:${server.port}...`);
+        logger.info(`App is listening on ${server.hostname}:${server.port}...`);
       });
     }
   }
@@ -55,7 +66,19 @@ class GroupNoticer {
   static async run() {
     const config = this.loadConfig();
 
+    const Logger = require('./logger.js');
     const CQHttp = require('./cqhttp.js');
+    const {inspect} = require("./utility.js");
+
+    global.logger = new Logger(config.log_level);
+    global.log_ex = (e) => {
+      if (e instanceof ErrorMsg) {
+        logger.warning(inspect(e));
+      } else {
+        logger.error(e);
+      }
+    }
+
     global.bot = new CQHttp(
       config.cqhttp.server,
       config.cqhttp.token,
