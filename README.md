@@ -1,5 +1,9 @@
 # group-noticer
-QQ群通知器
+给软件学院实验室整的QQ群通知器
+
+只能用来发通知，不带接收消息功能。
+
+需要支持 [OneBot](https://github.com/howmanybots/onebot) 的第三方QQ客户端。
 
 ## 运行
 
