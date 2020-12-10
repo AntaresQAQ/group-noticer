@@ -1,4 +1,5 @@
 const CryptoJS = require("crypto-js");
+const util = require("util");
 
 class Utility {
   static md5(message) {
@@ -25,6 +26,10 @@ class Utility {
       .replace(/&amp;/g, "&")
       .replace(/&#91;/g, "[")
       .replace(/&#93;/g, "]");
+  }
+
+  static inspect(obj) {
+    return util.inspect(obj);
   }
 }
 

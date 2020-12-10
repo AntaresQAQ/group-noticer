@@ -18,7 +18,7 @@ class CQHttp {
     const res = await this.post("get_group_member_list", {
       group_id: this.group_id
     });
-    if (res.status === 'failed') throw new Error("failed to get, retcode=" + res.retcode);
+    if (res.status === 'failed') throw new ErrorMsg("failed to get", res.retcode);
     return res.data;
   }
 
@@ -28,7 +28,7 @@ class CQHttp {
       message,
       auto_escape
     });
-    if (res.status === 'failed') throw new Error("failed to send, retcode=" + res.retcode);
+    if (res.status === 'failed') throw new ErrorMsg("failed to send", res.retcode);
     return res.data.message_id;
   }
 
@@ -37,16 +37,15 @@ class CQHttp {
       group_id: this.group_id,
       title, content
     });
-    if (res.status === 'failed') throw new Error("failed to send, retcode=" + res.retcode);
+    if (res.status === 'failed') throw new ErrorMsg("failed to send", res.retcode);
   }
 
   async deleteMessage(message_id) {
     const res = await this.post("delete_msg", {
       message_id
     });
-    if (res.status === 'failed') throw new Error("failed to delete, retcode=" + res.retcode);
+    if (res.status === 'failed') throw new ErrorMsg("failed to delete", res.retcode);
   }
 }
-
 
 module.exports = CQHttp;

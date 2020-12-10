@@ -1,1 +1,1 @@
-require("./src/index.js").run().catch(console.error);
+require("./src/index.js").run().catch(logger.error);
