@@ -14,16 +14,16 @@ class Utility {
     return CryptoJS.AES.decrypt(encryptedMessage, secret);
   }
 
-  static escapeCQCode(text) {
-    return text.replace(/,/g, "&#44;")
-      .replace(/&/g, "&amp;")
+  static escapeCQCode(text, is_value = false) {
+    if (is_value) text = text.replace(/,/g, "&#44;");
+    return text.replace(/&/g, "&amp;")
       .replace(/\[/g, "&#91;")
       .replace(/]/g, "&#93;");
   }
 
-  static unescapeCQCode(text) {
-    return text.replace(/&#44;/g, ",")
-      .replace(/&amp;/g, "&")
+  static unescapeCQCode(text, is_value = false) {
+    if (is_value) text = text.replace(/&#44;/g, ",");
+    return text.replace(/&amp;/g, "&")
       .replace(/&#91;/g, "[")
       .replace(/&#93;/g, "]");
   }
