@@ -166,6 +166,34 @@ token不正确的访问会返回403错误和以下信息:
   }
   ```
 
+### /send_poke
+
+- 功能: 发送戳一戳
+
+- method: POST
+
+- body
+
+  - user_id: number，一个QQ号码
+
+  ```json
+  {
+      "user_id": 1762386835
+  }
+  ```
+
+- response
+
+  - code: number，状态码，200为成功，其他为失败
+  - msg: string，信息，`ok`为成功，其他为错误信息
+
+  ```json
+  {
+    "code": 200,
+    "msg": "ok"
+  }
+  ```
+
 ### /send_notice
 
 - 功能: 发送群通知
